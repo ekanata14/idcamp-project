@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Storage</title>
+</head>
+<body>
+    <p>There are two type of web storage, session and local storage, if you want to use session storage, just change the localStorage to sessionStorage</p>
+    <p>Anda sudah menekan tombol sebanyak <span id="count"></span> kali</p>
+    <button id="button">Click Me!</button>
+    <button id="clear">Clear</button>
+    <script>
+        const cacheKey = 'NUMBER';
+        if(typeof(Storage) !== 'undefined'){
+            // Checking the key number data existence data on session storage
+            if(localStorage.getItem(cacheKey) === 'undefined'){
+                // If it hasn't been set, set the data with 0 number as the starter
+                localStorage.setItem(cacheKey, 0);
+            }
+
+            const button = document.querySelector('#button');
+            const count = document.querySelector('#count');
+            button.addEventListener('click', function(event){
+                let number = localStorage.getItem(cacheKey);
+                number++;
+                
+                localStorage.setItem(cacheKey, number);
+                count.innerText = localStorage.getItem(cacheKey);
+            });
+
+            clear.addEventListener('click', function (event){
+                localStorage.removeItem(cacheKey);
+                count.innerText = localStorage.getItem(cacheKey);
+            });
+        } else{
+            alert('Browser tidak mendukung web storage');
+        }
+    </script>
+</body>
+</html>

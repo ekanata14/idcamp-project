@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dom Implementation</title>
+</head>
+<body>
+    <img id="bosscha-image" src="assets/images/bosscha.jpg" alt="image">
+    <p id="caption">This is bosscha image</p>
+    <p>The image clicked <span id="count"></span> times</p>
+    <button id="changeIt" onclick="change()">CHANGE</button>
+    <button id="makeText">Make a new Element</button>
+    <p id="newText"></p>
+
+    <script>
+        function change(){
+            let image = document.querySelector("#bosscha-image");
+            image.setAttribute("src", "assets/images/farm-house.jpg")
+        
+            let caption = document.querySelector("#caption");
+            caption.innerHTML = '<p>This is farm house image</p>';
+        }
+
+        let theImage = document.querySelector("#bosscha-image");
+
+        theImage.addEventListener("click", function(event){
+            document.querySelector("#count").innerText++;
+        });
+
+        let newElement = document.querySelector("#makeText");
+
+        newElement.addEventListener("click", function(event){
+            document.querySelector("#newText").innerText = 'This is the new Element';
+        })
+    
+        
+    </script>
+</body>
+</html>
