@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function(){
         addTodo();
     });
 
+    // Fungsi untuk menambahkan todo
     function addTodo(){
         const textTodo = document.getElementById("title").value;
         const timestamp = document.getElementById("date").value;
@@ -17,16 +18,20 @@ document.addEventListener("DOMContentLoaded", function(){
         todos.push(todoObject);
 
         document.dispatchEvent(new Event(RENDER_EVENT));
+        saveData();
     }
     
+    // Fungsi untuk membuat ID unik
     function generateId(){
         return +new Date();
     }
     
+    // Fungsi untuk membuat todo object
     function generateTodoObject(id, task, timestamp, isCompleted){
         return {id, task, timestamp, isCompleted};
     }
 
+    // Fungsi untuk mencari todo
     function findTodo(todoId){
         for(const todoItem of todos){
             if(todoItem.id === todoId){
@@ -36,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function(){
         return null;
     }
 
+    // Fungsi untuk mencari angka index todo
     function findTodoIndex(todoId){
         for(const index in todos){
             if(todos[index].id === todoId){
@@ -46,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function(){
         return -1;
     }
 
+    // FUngsi untuk membuat todo agar bisa tampil di HTML
     function makeTodo(todoObject){
         const textTitle = document.createElement("h2");
         textTitle.innerText = todoObject.task;
@@ -92,6 +99,7 @@ document.addEventListener("DOMContentLoaded", function(){
         return container;
     }
     
+    // Fungsi untuk menambahkan todo ke tempat yang sudah selesai
     function addTaskToCompleted(todoId){
         const todoTarget= findTodo(todoId);
 
@@ -100,9 +108,10 @@ document.addEventListener("DOMContentLoaded", function(){
         todoTarget.isCompleted = true;
         document.dispatchEvent(new Event(RENDER_EVENT));
 
-        
+        saveData();
     }
 
+    // Fungsi untuk menghapus todo
     function removeTaskFromCompleted(todoId){
         const todoTarget = findTodoIndex(todoId);
 
@@ -110,16 +119,20 @@ document.addEventListener("DOMContentLoaded", function(){
 
         todos.splice(todoTarget, 1);
         document.dispatchEvent(new Event(RENDER_EVENT));
+        saveData();
     }
 
+    // Fungsi untuk mengembalikan todo ke tempat yang harus dilakukan
     function undoTaskFromCompleted(todoId){
         const todoTarget = findTodo(todoId);
 
         if(todoTarget == null) return;
         todoTarget.isCompleted = false;
         document.dispatchEvent(new Event(RENDER_EVENT));;
+        saveData();
     }
 
+    // Listener untuk merender todo
     document.addEventListener(RENDER_EVENT, function(){
         // console.log(todos);
 
@@ -138,5 +151,50 @@ document.addEventListener("DOMContentLoaded", function(){
             }
         }
     });
+
+    // Fungsi untuk save data
+    function saveData(){
+        if(isStorageExist()){
+            // loadDataFromStorage();
+            const parsed = JSON.stringify(todos);
+            localStorage.setItem(STORAGE_KEY, parsed);
+            document.dispatchEvent(new Event(SAVED_EVENT));
+        }
+    }
+
+    const SAVED_EVENT = 'saved-todo';
+    const STORAGE_KEY = 'TODO_APPS';
+
+    // Fungsi untuk mengecek apakah browser mendukung web storage
+    function isStorageExist(){
+        if(typeof(Storage) === "undefined"){
+            alert("Browser tidak mendukung web storage");
+            return false;
+        } else{
+            return true;
+        }
+    }
     
+    // Custom Event untuk mengetahui perubahan data
+    document.addEventListener(SAVED_EVENT, function(){
+        alert(localStorage.getItem(STORAGE_KEY));
+    });
+
+    // Fungsi untuk mengambil data dari local storage untuk ditampilkan pada tampilan
+    function loadDataFromStorage(){
+        const serializedData = localStorage.getItem(STORAGE_KEY);
+        let data = JSON.parse(serializedData);
+
+        if(data !== null){
+            for(const todo of data){
+                todos.push(todo);
+            }
+        }
+        document.dispatchEvent(new Event(RENDER_EVENT));
+    }
+
+    if(isStorageExist()){
+        loadDataFromStorage();
+    }
+
 });

@@ -60,7 +60,89 @@
         alert("Browser yang Anda gunakan tidak mendukung web storage");
     }
 
+    // Session dan local storage data awal
     sessionUserAttemptsField.innerText = sessionStorage.getItem(sessionUserAttemptsKey);
     localTotalVictoryField.innerText = localStorage.getItem(localTotalVictoryKey);
     localMaximumAttemptField.innerText = localStorage.getItem(localMaximumAttemptsKey);
+
+    // Play Button (Bermain) listener
+    playButton.addEventListener("click", function(){
+      sessionStorage.setItem(sessionAnswerKey, getAnswer());
+      sessionStorage.setItem(sessionUserIsPlayingKey, true);
+      beforeGameDisplay.setAttribute("hidden", true);
+      duringGameDisplay.removeAttribute("hidden");
+    });
+
+    // Listener ke angka 1 untuk memberikan angka 1
+    answerButton1.addEventListener("click", function(){
+      sessionUserAnswerField.innerText += "1";
+      if(sessionUserAnswerField.innerText.length == 3){
+        checkAnswer(sessionUserAnswerField.innerText);
+      }
+    });
+
+    // Listener ke angka 2 untuk memberikan angka 2
+    answerButton2.addEventListener("click", function(){
+      sessionUserAnswerField.innerText += "2";
+      if(sessionUserAnswerField.innerText.length == 3){
+        checkAnswer(sessionUserAnswerField.innerText);
+      }
+    });
+
+    // Listener ke angka 3 untuk memberikan angka 3
+    answerButton3.addEventListener("click", function(){
+      sessionUserAnswerField.innerText += "3";
+      if(sessionUserAnswerField.innerText.length == 3){
+        checkAnswer(sessionUserAnswerField.innerText);
+      }
+    });
+
+    // Function untuk mengecek jawaban
+    function checkAnswer(userGuess){
+      const answer = sessionStorage.getItem(sessionAnswerKey);
+
+      if(userGuess == answer){
+        duringGameDisplay.setAttribute("hidden", true);
+        afterGameDisplay.removeAttribute("hidden");
+        sessionTrueAnswerField.innerText = answer;
+        updateScore();
+      } else{
+        const previousAttemptAmount = parseInt(sessionStorage.getItem(sessionUserAttemptsKey));
+        sessionStorage.setItem(sessionUserAttemptsKey, previousAttemptAmount + 1);
+        sessionUserAttemptsField.innerText = sessionStorage.getItem(sessionUserAttemptsKey);
+        sessionUserAnswerField.innerText = '';
+        sessionUserWrongAnswerField.innnerText = userGuess;
+      }
+    }
+
+    // Function untuk mengupdate stats game
+    function updateScore(){
+      const sessionAttemptsValue = parseInt(sessionStorage.getItem(sessionUserAttemptsKey));
+      const localAttemptsValue = parseInt(localStorage.getItem(localMaximumAttemptsKey));
+
+      if(sessionAttemptsValue > localAttemptsValue){
+        localStorage.setItem(localMaximumAttemptsKey, sessionAttemptsValue);
+        localMaximumAttemptField.innerText = sessionAttemptsValue;
+      }
+
+      const previousTotalVictoryAmount = parseInt(localStorage.getItem(localTotalVictoryKey));
+      localStorage.setItem(localTotalVictoryKey, previousTotalVictoryAmount + 1);
+      localTotalVictoryField.innerText = localStorage.getItem(localTotalVictoryKey);
+    }
+    
+    window.addEventListener("beforeunload", function(){
+      sessionUserAnswerField.innerText = '';
+      sessionUserWrongAnswerField.innerText = '';
+      sessionStorage.setItem(sessionUserAttemptsKey, 0);
+      sessionUserAttemptsField.innerText = sessionStorage.getItem(sessionUserAttemptsKey);
+    });
+
+    destroyDataButton.addEventListener("click", function(){
+      sessionStorage.removeItem(sessionAnswerKey);
+      sessionStorage.removeItem(sessionUserAttemptsKey);
+      sessionStorage.removeItem(sessionUserIsPlayingKey);
+      localStorage.removeItem(localTotalVictoryKey);
+      localStorage.removeItem(localMaximumAttemptsKey);
+      alert("Mohon me-refresh halaman ini kembali");
+    });
   });
