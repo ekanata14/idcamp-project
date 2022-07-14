@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Capturing World</title>
+  <style>
+    body * {
+      margin: 8px;
+      padding: 5px;
+      border: 2px solid black;
+      width: 60%;
+    }
+  </style>
+</head>
+<body>
+    <!-- Ini adalah capturing yang merupakan kebalikan dari bubbling, yang jika ditekan event akan dimulai dari elemen parent paling luar menuju ke elemen yang event nya ditekan -->
+<div align="center" id="langit">LANGIT
+  <div align="center" id="luar">LUAR
+    <div align="center" id="tengah">TENGAH
+      <div align="center" id="dalam">DALAM</div>
+    </div>
+  </div>
+</div>
+ 
+<script>
+    const divs = document.getElementsByTagName("div");
+
+    for(let element of divs){
+        element.addEventListener('click', function(){
+            alert("ELEMEN " + element.getAttribute("id").toUpperCase());
+        }, true);
+    }
+</script>
+</body>
+</html>
