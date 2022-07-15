@@ -177,7 +177,19 @@ document.addEventListener("DOMContentLoaded", function(){
     
     // Custom Event untuk mengetahui perubahan data
     document.addEventListener(SAVED_EVENT, function(){
-        alert(localStorage.getItem(STORAGE_KEY));
+        alert("Test");
+        let todoItem = JSON.parse((localStorage.getItem(STORAGE_KEY)));
+        for(item in todoItem){
+            console.log(todoItem[item].id);
+        }
+
+        if(todoItem[item].isCompleted == true){
+            alert("Todo Anda telah selesai");
+        } else if(todoItem[item].isCompleted == false){
+            alert("Todo Anda telah dikembalikan");
+        }
+        
+        console.log(todoItem[item].isCompleted);
     });
 
     // Fungsi untuk mengambil data dari local storage untuk ditampilkan pada tampilan
