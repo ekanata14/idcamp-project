@@ -25,36 +25,15 @@ li{
     /* background-color: blue; */
     margin: 0 auto;
     display: flex;
+    padding-top: 28px;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    /* justify-content: center; */
+    align-items: flex-start;
     text-align: center;
 }
 
 .borrow-book-title{
     margin-bottom: 24px;
-}
-
-.book-form{
-    width: 400px;
-    padding: 40px;
-    background-color: #7A86B6;
-    box-shadow: 4px 4px rgba(0, 0, 0, 0.3);
-    border-radius: 20px;
-}
-
-.book-form button{
-    padding: 12px 16px;
-    border: none;
-    font-size: 16px;
-    border-radius: 20px;
-    /* color: #fff; */
-    margin-top: 20px;
-    cursor: pointer;
-}
-
-.not-finish-books{
-    margin-top: 80px;
 }
 
 .books-borrowed{
@@ -66,7 +45,10 @@ li{
 }
 
 .book-borrowed{
+    color: #fff;
     width: 400px;
+    height: 250px;
+    /* margin: 0 20px; */
     padding: 40px;
     background-color: #7A86B6;
     box-shadow: 4px 4px rgba(0, 0, 0, 0.3);
@@ -110,7 +92,7 @@ li{
 input{
     font-size: 20px;
     text-align: center;
-    width: 250px;
+    width: 200px;
     padding: 12px;
     border-radius: 10px;
     border: none;
